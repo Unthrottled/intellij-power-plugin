@@ -32,14 +32,18 @@ class PowerCore : PowerEventListener {
     return if (ideFrame is IdeFrameEx) {
       val navBarExt = ideFrame.getNorthExtension(NavBarRootPaneExtension.NAV_BAR)
       val component = navBarExt?.component
-      val point = component.toOptional()
+      val compileButton = component.toOptional()
         .flatMap { naveBarComponent ->
           val actionManager = ApplicationManager.getApplication().getServiceIfCreated(ActionManager::class.java)
           UIToolBox.findDescendant(naveBarComponent) { child ->
             child is ActionButton &&
                 "CompileDirty".equals(actionManager?.getId(child.action), ignoreCase = true)
           }
-        }.orElse(null)?.locationOnScreen ?: Point(0, 0)
+        }.orElse(null)
+      val point = compileButton?.locationOnScreen ?: Point(0, 0)
+      val size = compileButton.size
+      point.x += size?.width?.div(2) ?: 0
+      point.y += size?.height?.div(2) ?: 0
       SwingUtilities.convertPointFromScreen(point, ideFrame.component)
       point
     } else {

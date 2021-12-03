@@ -1,8 +1,10 @@
 package io.unthrottled.intellijpowerplugin
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.rd.paint2DLine
 import com.intellij.ui.components.JBLayeredPane
 import com.intellij.ui.jcef.HwFacadeJPanel
+import com.intellij.ui.paint.LinePainter2D
 import com.intellij.util.Alarm
 import java.awt.Color
 import java.awt.Graphics
@@ -20,6 +22,20 @@ class PowerCanvas(
   }
 
   private val fadeoutAlarm = Alarm()
+
+  private val stoppingPoint: Point = getStoppingPoint()
+
+  private fun getStoppingPoint(): Point {
+    val rootSize = rootPane.size
+    val rootWidth = rootSize.width
+    val midPoint = rootWidth / 2
+    val moveLeft = midPoint - startingPoint.x < 0
+    return if(moveLeft) {
+      Point(0, rootSize.height)
+    } else {
+      Point(rootWidth, rootSize.height)
+    }
+  }
 
   init {
     isOpaque = false
@@ -41,12 +57,19 @@ class PowerCanvas(
     super.paintComponent(g)
     if (g !is Graphics2D) return
 
-    g.color = Color.PINK
-    g.fillRect(startingPoint.x, startingPoint.y, 40, 40)
+    g.paint2DLine(
+      startingPoint,
+      stoppingPoint,
+      LinePainter2D.StrokeType.INSIDE,
+      2.0,
+      Color.CYAN
+    )
   }
 
   private fun remove() {
     rootPane.remove(this)
+    rootPane.revalidate()
+    rootPane.repaint()
   }
 
   override fun dispose() {
