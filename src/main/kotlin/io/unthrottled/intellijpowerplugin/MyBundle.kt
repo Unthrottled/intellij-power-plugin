@@ -1,4 +1,4 @@
-package com.github.unthrottled.intellijpowerplugin
+package io.unthrottled.intellijpowerplugin
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

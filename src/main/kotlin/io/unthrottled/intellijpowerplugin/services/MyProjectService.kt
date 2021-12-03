@@ -1,7 +1,7 @@
-package com.github.unthrottled.intellijpowerplugin.services
+package io.unthrottled.intellijpowerplugin.services
 
 import com.intellij.openapi.project.Project
-import com.github.unthrottled.intellijpowerplugin.MyBundle
+import io.unthrottled.intellijpowerplugin.MyBundle
 
 class MyProjectService(project: Project) {
 

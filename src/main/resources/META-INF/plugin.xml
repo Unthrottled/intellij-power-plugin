@@ -1,18 +1,18 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.unthrottled.intellijpowerplugin</id>
+    <id>io.unthrottled.intellijpowerplugin</id>
     <name>intellij-power-plugin</name>
     <vendor>unthrottled</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.unthrottled.intellijpowerplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.unthrottled.intellijpowerplugin.services.MyProjectService"/>
+        <applicationService serviceImplementation="io.unthrottled.intellijpowerplugin.services.MyApplicationService"/>
+        <projectService serviceImplementation="io.unthrottled.intellijpowerplugin.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.unthrottled.intellijpowerplugin.listeners.MyProjectManagerListener"
+        <listener class="io.unthrottled.intellijpowerplugin.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>

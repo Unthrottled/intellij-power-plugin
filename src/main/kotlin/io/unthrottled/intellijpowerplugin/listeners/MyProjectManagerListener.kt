@@ -1,9 +1,9 @@
-package com.github.unthrottled.intellijpowerplugin.listeners
+package io.unthrottled.intellijpowerplugin.listeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import com.github.unthrottled.intellijpowerplugin.services.MyProjectService
+import io.unthrottled.intellijpowerplugin.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 
