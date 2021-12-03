@@ -7,10 +7,12 @@ import com.intellij.util.Alarm
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
+import java.awt.Point
 import javax.swing.JLayeredPane
 
 class PowerCanvas(
   private val rootPane: JLayeredPane,
+  private val startingPoint: Point,
 ) : HwFacadeJPanel(), Disposable {
 
   companion object {
@@ -40,7 +42,7 @@ class PowerCanvas(
     if (g !is Graphics2D) return
 
     g.color = Color.PINK
-    g.fillRect(40, 40, 40, 40)
+    g.fillRect(startingPoint.x, startingPoint.y, 40, 40)
   }
 
   private fun remove() {
