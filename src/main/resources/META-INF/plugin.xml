@@ -2,17 +2,22 @@
 <idea-plugin>
     <id>io.unthrottled.intellijpowerplugin</id>
     <name>intellij-power-plugin</name>
-    <vendor>unthrottled</vendor>
+    <vendor>Unthrottled</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="io.unthrottled.intellijpowerplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="io.unthrottled.intellijpowerplugin.services.MyProjectService"/>
     </extensions>
-
     <applicationListeners>
-        <listener class="io.unthrottled.intellijpowerplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+    <projectListeners>
+        <listener class="io.unthrottled.intellijpowerplugin.PowerCore"
+                  topic="io.unthrottled.intellijpowerplugin.PowerEventListener" />
+    </projectListeners>
+    <actions>
+        <action id="io.unthrottled.power.build.activate" class="io.unthrottled.intellijpowerplugin.ActivatePowerBuild"
+                text="Activate Power Build">
+            <keyboard-shortcut keymap="$default" first-keystroke="shift alt P"/>
+        </action>
+    </actions>
 </idea-plugin>
