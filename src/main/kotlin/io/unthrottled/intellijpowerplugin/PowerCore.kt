@@ -4,13 +4,18 @@ import com.intellij.ide.navigationToolbar.NavBarRootPaneExtension
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.impl.ActionButton
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
+import com.intellij.openapi.components.serviceIfCreated
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.IdeFrame
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.openapi.wm.ex.IdeFrameEx
 import com.intellij.util.ui.UIUtil
+import java.awt.Component
 import java.awt.Point
+import java.util.*
 import javax.swing.SwingUtilities
+import kotlin.random.Random
 
 class PowerCore : PowerEventListener {
   override fun onDispatch(powerEvent: PowerEvent) {
@@ -20,12 +25,31 @@ class PowerCore : PowerEventListener {
 
     getRootPane(project).toOptional()
       .ifPresent { rootPane ->
+        val startingPoint = getStartingPoint(ideFrame)
         PowerCanvas(
           rootPane,
-          getStartingPoint(ideFrame)
+          project.service<ThorCore>().summonLightning(
+            startingPoint,
+            getStoppingPoint(rootPane, startingPoint)
+          ) ?: Collections.emptyList()
         ).display()
       }
   }
+
+  private fun getStoppingPoint(rootPane: Component, startingPoint: Point): Point {
+    val ranbo = Random(System.currentTimeMillis())
+    val rootSize = rootPane.size
+    val rootWidth = rootSize.width
+    val midPoint = rootWidth / 2
+    val moveLeft = midPoint - startingPoint.x < 0
+    val quarterPoint = midPoint / 2
+    return if (moveLeft) {
+      Point(ranbo.nextInt(0, midPoint - quarterPoint), rootSize.height)
+    } else {
+      Point(ranbo.nextInt(midPoint + quarterPoint, rootWidth), rootSize.height)
+    }
+  }
+
 
   private fun getStartingPoint(ideFrame: IdeFrame): Point {
     // todo: make more safe

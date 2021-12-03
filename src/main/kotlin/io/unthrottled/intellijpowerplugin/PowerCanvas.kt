@@ -9,12 +9,11 @@ import com.intellij.util.Alarm
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
-import java.awt.Point
 import javax.swing.JLayeredPane
 
 class PowerCanvas(
   private val rootPane: JLayeredPane,
-  private val startingPoint: Point,
+  private val lightningSegments: List<LightningSegment>,
 ) : HwFacadeJPanel(), Disposable {
 
   companion object {
@@ -22,20 +21,6 @@ class PowerCanvas(
   }
 
   private val fadeoutAlarm = Alarm()
-
-  private val stoppingPoint: Point = getStoppingPoint()
-
-  private fun getStoppingPoint(): Point {
-    val rootSize = rootPane.size
-    val rootWidth = rootSize.width
-    val midPoint = rootWidth / 2
-    val moveLeft = midPoint - startingPoint.x < 0
-    return if(moveLeft) {
-      Point(0, rootSize.height)
-    } else {
-      Point(rootWidth, rootSize.height)
-    }
-  }
 
   init {
     isOpaque = false
@@ -57,13 +42,15 @@ class PowerCanvas(
     super.paintComponent(g)
     if (g !is Graphics2D) return
 
-    g.paint2DLine(
-      startingPoint,
-      stoppingPoint,
-      LinePainter2D.StrokeType.INSIDE,
-      2.0,
-      Color.CYAN
-    )
+    lightningSegments.forEach {
+      g.paint2DLine(
+        it.start,
+        it.stop,
+        LinePainter2D.StrokeType.INSIDE,
+        2.0,
+        Color.CYAN,
+      )
+    }
   }
 
   private fun remove() {
@@ -76,3 +63,5 @@ class PowerCanvas(
     fadeoutAlarm.dispose()
   }
 }
+
+
